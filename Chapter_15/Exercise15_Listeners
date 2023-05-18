@@ -1,0 +1,67 @@
+package practice;
+
+import javafx.application.Application;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
+
+public class CirclePane extends Application {
+	@Override
+	public void start(Stage primaryStage) {
+	Pane pane = new Pane();
+	Circle circle = new Circle(200, 150, 100);
+	circle.setStroke(Color.BLACK);
+	circle.setFill(Color.RED);
+	pane.getChildren().add(circle);
+	
+	HBox hbox = new HBox();
+	hbox.setSpacing(10);
+	hbox.setAlignment(Pos.CENTER);
+	Button btUp = new Button ("Up");
+	Button btDown = new Button ("Down");
+	Button btLeft = new Button ("Left ");
+	Button btRight = new Button ("Right");
+	hbox.getChildren().addAll(btUp, btDown, btLeft, btRight);
+	
+	
+	
+	BorderPane borderPane = new BorderPane();
+	borderPane.setCenter(pane);
+	borderPane.setBottom(hbox);
+	BorderPane.setAlignment(hbox, Pos.CENTER);
+	
+	Scene scene = new Scene(borderPane, 400, 300);
+	primaryStage.setTitle("Circle moving FUN");
+	primaryStage.setScene(scene);
+	primaryStage.show();
+	
+	btUp.setOnAction(e -> {
+		circle.setCenterY((circle.getCenterY()) > 0 ? circle.getCenterY() - 10 : circle.getCenterY());
+	});
+	
+	btDown.setOnAction(e -> {
+		circle.setCenterY((circle.getCenterY()) < 300 ? circle.getCenterY() + 10 : circle.getCenterY());
+	});
+	
+	btLeft.setOnAction(e -> {
+		circle.setCenterX((circle.getCenterX()) > 0 ? circle.getCenterX() - 10 : circle.getCenterX());
+	});
+	
+	btRight.setOnAction(e -> {
+		circle.setCenterX((circle.getCenterX()) < 400 ? circle.getCenterX() + 10 : circle.getCenterX());
+	});
+	
+	}
+	
+	public static void main(String[] args) {
+		launch(args);
+	}
+	
+	
+}
