@@ -1,6 +1,7 @@
 package practice;
 
 import javafx.animation.Animation;
+import javafx.animation.Animation.Status;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.animation.KeyFrame;
@@ -8,67 +9,58 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Polygon;
+import javafx.collections.ObservableList;
+import javafx.animation.PathTransition;
 
 public class AnimationDemo extends Application {
 	@Override
 	public void start (Stage primaryStage) {
-		StackPane pane = new StackPane();
-		Text txt = new Text(20, 50, "PERKELE");
-		txt.setFill(Color.DARKMAGENTA);
-		//pane.getChildren().add(txt);
+		Pane pane = new Pane();
 
 		Polygon pentg = new Polygon(5);
-		pentg.getPoints().addAll(new Double[] {
-				40.0, 10.0,
-				70.0, 40.0,
-				60.0, 70.0,
-				20.0, 70.0,
-				10.0, 40.0
-		});
-		
-		Polygon pentg2 = new Polygon(5);
-		pentg2.getPoints().addAll(new Double[] {
-				40.0, -10.0,
-				70.0, -40.0,
-				60.0, -70.0,
-				20.0, -70.0,
-				10.0, -40.0
-		});
-		pentg2.setFill(null);
-		
-		Rectangle rect = new Rectangle(25, 60);
+		pentg.setFill(Color.BLUE);
+
+		Rectangle rect = new Rectangle(60, 25);
 		rect.setFill(Color.RED);
-
-		pane.getChildren().addAll(pentg, pentg2);
 		
-		EventHandler<ActionEvent> eventHandler = e -> {
-			if (txt.getText().length() != 0) {
-				txt.setText("");
-			}
-			else {
-				txt.setText("SAATANA");
-			}
-		};
+		ObservableList<Double> list = pentg.getPoints();
+		final double WIDTH = 250, HEIGHT = 250;
+		double centerX = WIDTH / 2, centerY = HEIGHT / 2;
+		double radius = Math.min(WIDTH, HEIGHT) * 0.4;
+		int sides = 5;
+		
+		for (int i =0; i < 5; i++) {
+			list.add(centerX + radius * Math.cos(2 * i * Math.PI / 5));
+			list.add(centerY + radius * Math.sin(2 * i * Math.PI / 5));
+		}
+		
+		setPolygonSides(pentg, centerX, centerY, radius, sides);
+		
+		PathTransition pt = new PathTransition();
+		pt.setDuration(Duration.millis(1000));
+		pt.setPath(pentg);
+		pt.setNode(rect);
+		pt.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+		pt.setCycleCount(Timeline.INDEFINITE);
+		pt.play();
+		
+		if (pt.getStatus() == Status.RUNNING) {
+			pentg.setOnMouseClicked(e -> pt.pause());
+		}
+		else {
+			pentg.setOnMouseClicked(e -> pt.play());
+		}
+		
+//		pentg.setOnMouseClicked(e -> pt.pause());
+//		pentg.setOnMouseReleased(e -> pt.play());
 
-		Timeline bingo = new Timeline(
-				new KeyFrame(Duration.millis(500), eventHandler));
-		bingo.setCycleCount(Timeline.INDEFINITE);
-		bingo.play();
-
-		txt.setOnMouseClicked(e -> {
-			if (bingo.getStatus() == Animation.Status.PAUSED) {
-				bingo.play();
-			}
-			else {
-				bingo.pause();
-			}
-		});
+		pane.getChildren().addAll(pentg, rect);
 
 		Scene scene = new Scene(pane, 250, 250);
 		primaryStage.setTitle("BINGOBANGOBONGO");
@@ -78,6 +70,18 @@ public class AnimationDemo extends Application {
 	}
 	public static void main(String[] args) {
 		launch(args);
+	}
+	
+	private static void setPolygonSides(Polygon polygon, double centerX, double centerY, double radius, int sides) {
+	    polygon.getPoints().clear();
+	    final double angleStep = Math.PI * 2 / sides;
+	    double angle = 115;
+	    for (int i = 0; i < sides; i++, angle += angleStep) {
+	        polygon.getPoints().addAll(
+	                Math.sin(angle) * radius + centerX, // x coordinate of the corner
+	                Math.cos(angle) * radius + centerY // y coordinate of the corner
+	        );
+	    }
 	}
 
 }
