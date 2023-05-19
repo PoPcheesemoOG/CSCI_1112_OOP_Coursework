@@ -1,0 +1,92 @@
+package practice;
+
+import javafx.application.*;
+import javafx.geometry.Pos;
+import javafx.stage.Stage;
+import javafx.scene.layout.*;
+import javafx.scene.control.*;
+import javafx.scene.paint.*;
+import javafx.scene.Scene;
+import javafx.scene.text.*;
+
+
+
+public class RadioButtonDemo extends Application {
+
+	public static void main(String[] args) {
+		launch (args);
+	}
+
+	public void start(Stage primaryStage) throws Exception {
+		Pane pane = new Pane();
+		BorderPane bPane = new BorderPane();
+
+		RadioButton rbRed = new RadioButton("Red");
+		RadioButton rbYel = new RadioButton("Yellow");
+		RadioButton rbBla = new RadioButton("Black");
+		RadioButton rbOra = new RadioButton("Orange");
+		RadioButton rbGrn = new RadioButton("Green");
+		Button btLeft =new Button("Left ");
+		Button btRight = new Button("Right ");
+		Text txt = new Text(160, 160, "Programming is fun!");
+
+		ToggleGroup tg = new ToggleGroup();
+		rbRed.setToggleGroup(tg);
+		rbYel.setToggleGroup(tg);
+		rbBla.setToggleGroup(tg);
+		rbOra.setToggleGroup(tg);
+		rbGrn.setToggleGroup(tg);
+
+		rbRed.setOnAction(e -> {
+			if (rbRed.isSelected()) txt.setFill(Color.RED);
+			});
+		rbYel.setOnAction(e -> {
+			if (rbYel.isSelected()) txt.setFill(Color.GOLD);
+			});
+		rbBla.setOnAction(e -> {
+			if (rbBla.isSelected()) txt.setFill(Color.BLACK);
+			});
+		rbOra.setOnAction(e -> {
+			if (rbOra.isSelected()) txt.setFill(Color.ORANGE);
+			});
+		rbGrn.setOnAction(e -> {
+			if (rbGrn.isSelected()) txt.setFill(Color.GREEN);
+			});
+		
+		double tx = txt.getX();
+		
+		btLeft.setOnAction(e -> {
+			txt.setX((tx > 0) ? tx -= 10 : 0;)
+			//(tx > 0) ? txt.setX(tx -= 10) : 0;
+		});
+		
+		btRight.setOnAction(e -> {
+			((tx < 400) ? txt.setX(tx += 10) : 0);
+		});
+
+		HBox hbox1 = new HBox();
+		HBox hbox2 = new HBox();
+
+		hbox1.getChildren().addAll(rbRed, rbYel, rbBla, rbOra, rbGrn);
+		hbox2.getChildren().addAll(btLeft, btRight);
+
+		hbox1.setAlignment(Pos.TOP_CENTER);
+		hbox2.setAlignment(Pos.BOTTOM_CENTER);
+
+		hbox1.setSpacing(15);
+		hbox2.setSpacing(15);
+
+		pane.getChildren().add(txt);
+
+		bPane.setCenter(pane);
+		bPane.setBottom(hbox2);
+		bPane.setTop(hbox1);
+
+		Scene scene = new Scene(bPane, 400, 400);
+
+		primaryStage.setTitle("Radio Buttons");
+		primaryStage.setScene(scene);
+		primaryStage.show();
+	}
+
+}
