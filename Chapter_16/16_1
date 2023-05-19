@@ -1,4 +1,8 @@
+/* Name: Paul Helske
+ * Date: 05/19/2022
+ */ 
 package practice;
+ 
 
 import javafx.application.*;
 import javafx.geometry.Pos;
@@ -53,16 +57,19 @@ public class RadioButtonDemo extends Application {
 			if (rbGrn.isSelected()) txt.setFill(Color.GREEN);
 			});
 		
-		double tx = txt.getX();
+		//double tx = txt.getX();
 		
 		btLeft.setOnAction(e -> {
-			txt.setX((tx > 0) ? tx -= 10 : 0;)
-			//(tx > 0) ? txt.setX(tx -= 10) : 0;
-		});
+			if (txt.getX() > 0 ) {
+				txt.setX(txt.getX() - 10);
+			}
+			});
 		
 		btRight.setOnAction(e -> {
-			((tx < 400) ? txt.setX(tx += 10) : 0);
-		});
+			if (txt.getX() < 390) {
+				txt.setX(txt.getX() + 10);
+			}
+			});
 
 		HBox hbox1 = new HBox();
 		HBox hbox2 = new HBox();
