@@ -1,97 +1,99 @@
 /* Name: Paul Helske
- * Date: 05/18/2023
- */
-
+ * Date: 05/19/2022
+ */ 
 package practice;
+ 
 
-import javafx.animation.Animation.Status;
-import javafx.application.Application;
+import javafx.application.*;
+import javafx.geometry.Pos;
 import javafx.stage.Stage;
-import javafx.animation.Timeline;
+import javafx.scene.layout.*;
+import javafx.scene.control.*;
+import javafx.scene.paint.*;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.util.Duration;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Polygon;
-import javafx.collections.ObservableList;
-import javafx.animation.PathTransition;
-import javafx.animation.FadeTransition;
+import javafx.scene.text.*;
 
-public class AnimationDemo extends Application {
-	@Override
-	public void start (Stage primaryStage) {
+
+
+public class RadioButtonDemo extends Application {
+
+	public static void main(String[] args) {
+		launch (args);
+	}
+
+	public void start(Stage primaryStage) throws Exception {
 		Pane pane = new Pane();
+		BorderPane bPane = new BorderPane();
 
-		Polygon pentg = new Polygon(5);
-		pentg.setFill(Color.BLUE);
+		RadioButton rbRed = new RadioButton("Red");
+		RadioButton rbYel = new RadioButton("Yellow");
+		RadioButton rbBla = new RadioButton("Black");
+		RadioButton rbOra = new RadioButton("Orange");
+		RadioButton rbGrn = new RadioButton("Green");
+		Button btLeft =new Button("Left ");
+		Button btRight = new Button("Right ");
+		Text txt = new Text(160, 160, "Programming is fun!");
 
-		Rectangle rect = new Rectangle(60, 25);
-		rect.setFill(Color.RED);
+		ToggleGroup tg = new ToggleGroup();
+		rbRed.setToggleGroup(tg);
+		rbYel.setToggleGroup(tg);
+		rbBla.setToggleGroup(tg);
+		rbOra.setToggleGroup(tg);
+		rbGrn.setToggleGroup(tg);
 
-		ObservableList<Double> list = pentg.getPoints();
-		final double WIDTH = 250, HEIGHT = 250;
-		double centerX = WIDTH / 2, centerY = HEIGHT / 2;
-		double radius = Math.min(WIDTH, HEIGHT) * 0.4;
-		int sides = 5;
-
-		for (int i =0; i < 5; i++) {
-			list.add(centerX + radius * Math.cos(2 * i * Math.PI / 5));
-			list.add(centerY + radius * Math.sin(2 * i * Math.PI / 5));
-		}
-
-		setPolygonSides(pentg, centerX, centerY, radius, sides);
-
-		PathTransition pt = new PathTransition();
-		pt.setDuration(Duration.millis(2000));
-		pt.setPath(pentg);
-		pt.setNode(rect);
-		pt.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-		pt.setCycleCount(Timeline.INDEFINITE);
-		pt.play();
+		rbRed.setOnAction(e -> {
+			if (rbRed.isSelected()) txt.setFill(Color.RED);
+			});
+		rbYel.setOnAction(e -> {
+			if (rbYel.isSelected()) txt.setFill(Color.GOLD);
+			});
+		rbBla.setOnAction(e -> {
+			if (rbBla.isSelected()) txt.setFill(Color.BLACK);
+			});
+		rbOra.setOnAction(e -> {
+			if (rbOra.isSelected()) txt.setFill(Color.ORANGE);
+			});
+		rbGrn.setOnAction(e -> {
+			if (rbGrn.isSelected()) txt.setFill(Color.GREEN);
+			});
 		
-		FadeTransition ft = new FadeTransition(Duration.millis(2000), rect);
-		ft.setFromValue(1.0);
-		ft.setToValue(0.01);
-		ft.setCycleCount(Timeline.INDEFINITE);
-		ft.setAutoReverse(true);
-		ft.play();
+		//double tx = txt.getX();
 		
-		pentg.setOnMousePressed(e -> {
-			System.out.println("LOL");
-			if (pt.getStatus() == Status.RUNNING) {
-				pt.pause();
-				ft.pause();
+		btLeft.setOnAction(e -> {
+			if (txt.getX() > 0 ) {
+				txt.setX(txt.getX() - 10);
 			}
-
-			else if (pt.getStatus() == Status.PAUSED) {
-				pt.play();
-				ft.play();
+			});
+		
+		btRight.setOnAction(e -> {
+			if (txt.getX() < 390) {
+				txt.setX(txt.getX() + 10);
 			}
+			});
 
-		});
+		HBox hbox1 = new HBox();
+		HBox hbox2 = new HBox();
 
-		pane.getChildren().addAll(pentg, rect);
+		hbox1.getChildren().addAll(rbRed, rbYel, rbBla, rbOra, rbGrn);
+		hbox2.getChildren().addAll(btLeft, btRight);
 
-		Scene scene = new Scene(pane, 250, 250);
-		primaryStage.setTitle("BINGOBANGOBONGO");
+		hbox1.setAlignment(Pos.TOP_CENTER);
+		hbox2.setAlignment(Pos.BOTTOM_CENTER);
+
+		hbox1.setSpacing(15);
+		hbox2.setSpacing(15);
+
+		pane.getChildren().add(txt);
+
+		bPane.setCenter(pane);
+		bPane.setBottom(hbox2);
+		bPane.setTop(hbox1);
+
+		Scene scene = new Scene(bPane, 400, 400);
+
+		primaryStage.setTitle("Radio Buttons");
 		primaryStage.setScene(scene);
 		primaryStage.show();
-
-	}
-	public static void main(String[] args) {
-		launch(args);
 	}
 
-	private static void setPolygonSides(Polygon polygon, double centerX, double centerY, double radius, int sides) {
-		polygon.getPoints().clear();
-		final double angleStep = Math.PI * 2 / sides;
-		double angle = 115;
-		for (int i = 0; i < sides; i++, angle += angleStep) {
-			polygon.getPoints().addAll(
-					Math.sin(angle) * radius + centerX,
-					Math.cos(angle) * radius + centerY
-					);
-		}
-	}
 }
