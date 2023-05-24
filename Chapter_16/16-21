@@ -1,0 +1,114 @@
+package practice;
+
+import javafx.application.*;
+import javafx.geometry.Pos;
+import javafx.stage.Stage;
+import javafx.scene.layout.*;
+import javafx.scene.control.*;
+import javafx.scene.paint.*;
+import javafx.scene.Scene;
+import javafx.scene.text.*;
+import javafx.geometry.*;
+import javafx.scene.control.*;
+import java.util.*;
+import java.time.*;
+
+
+public class ex16_21 extends Application {
+
+	@Override
+	public void start(Stage PrimaryStage) throws Exception {
+		Pane pane = new Pane();
+		BorderPane bPane = new BorderPane();
+		TextField tf = new TextField();
+		long inputTime = 20;
+		String timeLeft1 = Long.toOctalString(inputTime);
+		Text timeLeft = new Text(200, 200, timeLeft1);
+		timeLeft.setFont((Font.font(STYLESHEET_CASPIAN, FontWeight.BOLD, FontPosture.REGULAR, 72)));
+		
+		long sTime = System.nanoTime();
+		
+		Scanner input = new Scanner(System.in);
+		
+		Button btOK = new Button("Hello");
+		HBox hbox = new HBox();
+		hbox.getChildren().addAll(tf, timeLeft = new Text(timeLeft1));
+		tf.setPromptText("Enter the amount of time in seconds");
+		tf.setVisible(true);
+		tf.setAlignment(Pos.TOP_CENTER);
+		timeLeft.setVisible(false);
+		
+		// LocalTime startTime = LocalTime.ofSecondOfDay(inputTime);
+		
+		timeLeft1 = Long.toOctalString(inputTime);
+		
+		tf.setOnAction(e -> {
+			long inputTime1 = 0;
+			inputTime1 = Long.parseLong(tf.getText());
+			System.out.println("" + inputTime1);
+			
+			hbox.getChildren().clear();
+			
+			Text txt = new Text(new String("" + inputTime1));
+			txt.setFont((Font.font(STYLESHEET_CASPIAN, FontWeight.BOLD, FontPosture.REGULAR, 72)));
+			
+			if (hbox.getChildren().contains(btOK) == false) {
+			hbox.getChildren().add(btOK);
+			}
+			else if (hbox.getChildren().contains(btOK) == true) {
+				
+			}
+			btOK.setAlignment(Pos.BOTTOM_CENTER);
+			hbox.getChildren().add(txt);
+			// PrimaryStage.show();
+		});
+		
+		hbox.getChildren().add(timeLeft = new Text(timeLeft1));
+		
+		btOK.setOnAction(e -> {
+			hbox.getChildren().clear();
+			
+			long inputTime2 = 0;
+			
+			int i = 1;
+			inputTime2 = Long.parseLong(tf.getText()) - i;
+			
+			Text txt1 = new Text(new String("" + inputTime2));
+			txt1.setFont((Font.font(STYLESHEET_CASPIAN, FontWeight.BOLD, FontPosture.REGULAR, 72)));
+			hbox.getChildren().addAll(btOK, txt1);
+			i =+ 1;
+		//	sTime = 10;
+			
+			System.out.println("Time: " + (sTime - System.nanoTime() / 1000000000));
+			
+		});
+		
+		
+		Text bingo = new Text(tf.toString());
+		timeLeft = bingo;
+		
+		
+		
+		pane.getChildren().add(hbox);
+		bPane.getChildren().add(pane);
+		Scene scene = new Scene(bPane, 400, 400);
+		
+		PrimaryStage.setTitle("AAAAAHHHHH");
+		PrimaryStage.setScene(scene);
+		PrimaryStage.show();
+		
+		
+	}
+	
+//	public void paintWatch() {
+//		getChildren()
+//	}
+	
+	
+	public static void main(String[] args) {
+		launch (args);
+	}
+
+	
+
+}
