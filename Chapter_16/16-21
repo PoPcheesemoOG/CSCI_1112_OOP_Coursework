@@ -1,114 +1,87 @@
+/* Name: Paul Helske
+ * Date: 05/24/2023
+ */
+
 package practice;
 
 import javafx.application.*;
-import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
-import javafx.scene.paint.*;
 import javafx.scene.Scene;
-import javafx.scene.text.*;
-import javafx.geometry.*;
-import javafx.scene.control.*;
-import java.util.*;
-import java.time.*;
-
+import javafx.util.Duration;
+import javafx.animation.*;
+import javafx.animation.KeyFrame;
+import javafx.scene.media.*;
 
 public class ex16_21 extends Application {
+	Pane pane = new Pane();
+	BorderPane bPane = new BorderPane();
+	TextField tf = new TextField();
+
+	Media media = new Media("https://liveexample.pearsoncmg.com/common/audio/anthem/anthem0.mp3");
+	MediaPlayer mp = new MediaPlayer(media);
+
+	HBox hbox = new HBox();
+	int i = 1;
+	
+	Timeline watch = new Timeline(
+			new KeyFrame(Duration.millis(1000), e -> {
+			
+				if (i > 0) {
+					i = Integer.parseInt(tf.getText());
+					i--;
+					tf.setText("" + i);
+				}
+				else if (i < 1) {
+					//tf.setText("MUSIC!");
+					i = 0;
+				}
+				this.i = 0;
+				if (i == 0) {
+					System.out.println("[Anthem music playing]");
+					mp.play();
+					stop();
+				}
+				
+			}));
 
 	@Override
 	public void start(Stage PrimaryStage) throws Exception {
-		Pane pane = new Pane();
-		BorderPane bPane = new BorderPane();
-		TextField tf = new TextField();
-		long inputTime = 20;
-		String timeLeft1 = Long.toOctalString(inputTime);
-		Text timeLeft = new Text(200, 200, timeLeft1);
-		timeLeft.setFont((Font.font(STYLESHEET_CASPIAN, FontWeight.BOLD, FontPosture.REGULAR, 72)));
-		
-		long sTime = System.nanoTime();
-		
-		Scanner input = new Scanner(System.in);
-		
-		Button btOK = new Button("Hello");
-		HBox hbox = new HBox();
-		hbox.getChildren().addAll(tf, timeLeft = new Text(timeLeft1));
-		tf.setPromptText("Enter the amount of time in seconds");
-		tf.setVisible(true);
-		tf.setAlignment(Pos.TOP_CENTER);
-		timeLeft.setVisible(false);
-		
-		// LocalTime startTime = LocalTime.ofSecondOfDay(inputTime);
-		
-		timeLeft1 = Long.toOctalString(inputTime);
-		
+
+		watch.setCycleCount(Timeline.INDEFINITE);
+		mp.setCycleCount(Timeline.INDEFINITE);
+
+		hbox.getChildren().add(tf);
+
 		tf.setOnAction(e -> {
-			long inputTime1 = 0;
-			inputTime1 = Long.parseLong(tf.getText());
-			System.out.println("" + inputTime1);
-			
-			hbox.getChildren().clear();
-			
-			Text txt = new Text(new String("" + inputTime1));
-			txt.setFont((Font.font(STYLESHEET_CASPIAN, FontWeight.BOLD, FontPosture.REGULAR, 72)));
-			
-			if (hbox.getChildren().contains(btOK) == false) {
-			hbox.getChildren().add(btOK);
+			watch.play();
+			if (i == 0) {
+				System.out.println("[Anthem music playing]");
+				mp.play();
+				watch.stop();
 			}
-			else if (hbox.getChildren().contains(btOK) == true) {
-				
-			}
-			btOK.setAlignment(Pos.BOTTOM_CENTER);
-			hbox.getChildren().add(txt);
-			// PrimaryStage.show();
+
 		});
 		
-		hbox.getChildren().add(timeLeft = new Text(timeLeft1));
-		
-		btOK.setOnAction(e -> {
-			hbox.getChildren().clear();
-			
-			long inputTime2 = 0;
-			
-			int i = 1;
-			inputTime2 = Long.parseLong(tf.getText()) - i;
-			
-			Text txt1 = new Text(new String("" + inputTime2));
-			txt1.setFont((Font.font(STYLESHEET_CASPIAN, FontWeight.BOLD, FontPosture.REGULAR, 72)));
-			hbox.getChildren().addAll(btOK, txt1);
-			i =+ 1;
-		//	sTime = 10;
-			
-			System.out.println("Time: " + (sTime - System.nanoTime() / 1000000000));
-			
-		});
+		if (i == 0) {
+			System.out.println("[Anthem music playing]");
+			mp.play();
+			watch.stop();
+		}
 		
 		
-		Text bingo = new Text(tf.toString());
-		timeLeft = bingo;
-		
-		
-		
+
 		pane.getChildren().add(hbox);
 		bPane.getChildren().add(pane);
-		Scene scene = new Scene(bPane, 400, 400);
-		
+		Scene scene = new Scene(bPane, 200, 50);
+
 		PrimaryStage.setTitle("AAAAAHHHHH");
 		PrimaryStage.setScene(scene);
 		PrimaryStage.show();
-		
-		
 	}
-	
-//	public void paintWatch() {
-//		getChildren()
-//	}
-	
-	
+
 	public static void main(String[] args) {
 		launch (args);
 	}
-
-	
-
 }
