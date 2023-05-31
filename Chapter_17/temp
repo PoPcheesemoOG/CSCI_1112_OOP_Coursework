@@ -1,1 +1,56 @@
-temp
+/* Name: Paul Helske
+ * Date: 05/30/2023
+ */
+import java.io.*;
+import java.util.*;
+
+public class Ex17_14 {
+	
+
+	public static void main(String[] args) throws IOException {
+		Scanner input = new Scanner(System.in);
+	//	encryptFile();
+		System.in.close();
+		decryptFile();
+		
+	}
+	public static void encryptFile() throws IOException {
+		String inFileName = "";
+		String outFileName = "";
+		
+		System.out.println("Please enter an input file name: ");
+		inFileName = input.nextLine();
+		System.out.println("Please enter an output file name: ");
+		outFileName = (input.nextLine() + ".txt");
+		input.close();
+		FileOutputStream fOutput = new FileOutputStream(outFileName);
+		ObjectOutputStream output = new ObjectOutputStream(fOutput);		
+		for (int i = 0; i < inFileName.length(); i++) {
+			char q = inFileName.charAt(i);
+			q += 5;
+			output.writeChar(q);
+			System.out.println(q + " ");
+		}
+		output.close();
+	}
+	
+	public static void decryptFile() throws IOException {
+		String inFileName = "blank";
+		String outFileName = "blank";
+		System.out.println("Please enter the name for the encrypted file: ");
+		inFileName = input.next();
+//		inFileName = "Bongo.txt";
+		System.out.println("Please enter an output file name: ");
+		outFileName = (input.next() + ".txt");
+//		outFileName = "e17_15.txt";
+		input.close();
+		FileInputStream fInput = new FileInputStream(outFileName);
+		ObjectInputStream oInput = new ObjectInputStream(fInput);
+		for (int i = 0; i < outFileName.length(); i++) {
+			char q = oInput.readChar();
+			q -= 5;
+			System.out.println(q + " ");
+		}
+		oInput.close();
+	}
+}
