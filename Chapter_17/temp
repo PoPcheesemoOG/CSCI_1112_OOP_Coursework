@@ -1,28 +1,23 @@
 /* Name: Paul Helske
  * Date: 05/30/2023
  */
+package practice;
+
 import java.io.*;
 import java.util.*;
 
 public class Ex17_14 {
-	
+	static Scanner input = new Scanner(System.in);
 
 	public static void main(String[] args) throws IOException {
-		Scanner input = new Scanner(System.in);
-	//	encryptFile();
-		System.in.close();
+		
+		encryptFile();
 		decryptFile();
 		
 	}
 	public static void encryptFile() throws IOException {
-		String inFileName = "";
-		String outFileName = "";
-		
-		System.out.println("Please enter an input file name: ");
-		inFileName = input.nextLine();
-		System.out.println("Please enter an output file name: ");
-		outFileName = (input.nextLine() + ".txt");
-		input.close();
+		String inFileName = inputfilename();
+		String outFileName = outputfilename();
 		FileOutputStream fOutput = new FileOutputStream(outFileName);
 		ObjectOutputStream output = new ObjectOutputStream(fOutput);		
 		for (int i = 0; i < inFileName.length(); i++) {
@@ -34,23 +29,39 @@ public class Ex17_14 {
 		output.close();
 	}
 	
-	public static void decryptFile() throws IOException {
-		String inFileName = "blank";
-		String outFileName = "blank";
-		System.out.println("Please enter the name for the encrypted file: ");
-		inFileName = input.next();
-//		inFileName = "Bongo.txt";
-		System.out.println("Please enter an output file name: ");
-		outFileName = (input.next() + ".txt");
-//		outFileName = "e17_15.txt";
-		input.close();
-		FileInputStream fInput = new FileInputStream(outFileName);
+	public static void decryptFile() throws IOException, EOFException {
+		String inFileName = inputfilename();
+		String outFileName = outputfilename();
+
+		FileInputStream fInput = new FileInputStream(inFileName);
 		ObjectInputStream oInput = new ObjectInputStream(fInput);
+		
+		FileOutputStream fOutput = new FileOutputStream(outFileName);
+		ObjectOutputStream output = new ObjectOutputStream(fOutput);	
+		
 		for (int i = 0; i < outFileName.length(); i++) {
 			char q = oInput.readChar();
 			q -= 5;
 			System.out.println(q + " ");
+			output.writeChar(q);
 		}
 		oInput.close();
+		output.close();
+	}
+	public static String inputfilename() {
+		String fileName = "";
+		
+		System.out.println("Please enter an input file name: ");
+		fileName = input.nextLine();
+
+		return fileName;
+	}
+	public static String outputfilename() {
+		String fileName = "";
+		
+		System.out.println("Please enter an output file name: ");
+		fileName = input.nextLine();
+		
+		return fileName;
 	}
 }
