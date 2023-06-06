@@ -1,0 +1,28 @@
+
+public class Example {
+	
+	
+	//Base case
+	//What happens when the problem is more or less solved?
+	
+	//Recursive case
+	//What do wwe do when the problem isn't solved yet?
+	
+	//Every recursive call you make, must advance the problem
+	//towards completion
+	public static int addAllBelowNumber(int number) {
+		System.out.println(number);
+		if(number == 1) {
+			return 1;
+		}
+		return addAllBelowNumber(number - 1) + number;
+	}
+	
+	
+	public static void main(String[] args) {
+		//Expected: 6
+		int actualTotal = addAllBelowNumber(5);
+		System.out.println("End result " + actualTotal);
+	}
+	
+}
